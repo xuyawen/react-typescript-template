@@ -1,16 +1,16 @@
 1. 添加less支持，css module配置 antd配置
 
 项目中添加less less-loader antd
-yarn add --dev less less-loader
-yarn add antd ant-design-pro
+`yarn add --dev less less-loader
+yarn add antd ant-design-pro`
 
 修改webpack.config.js
-const lessRegex = /\.less$/
+`const lessRegex = /\.less$/
 const lessModuleRegex = /\.module\.less$/
-const antdRegex = /\.(css|less)$/
+const antdRegex = /\.(css|less)$/`
 
 // 添加第三个参数otherConfig
-const getStyleLoaders = (cssOptions, preProcessor, otherConfig) => {
+`const getStyleLoaders = (cssOptions, preProcessor, otherConfig) => {
     ...
     if (preProcessor) {
       loaders.push({
@@ -22,11 +22,11 @@ const getStyleLoaders = (cssOptions, preProcessor, otherConfig) => {
       })
     }
     return loaders
-}
+}`
 
 // Add antd setting
 ...
-{
+`{
   test: lessRegex,
     exclude: /node_modules|antd\.css/,
   use: getStyleLoaders(
@@ -72,11 +72,11 @@ const getStyleLoaders = (cssOptions, preProcessor, otherConfig) => {
   }
 ),
   sideEffects: true
-}
+}`
 
 2. 生产环境去除console
 修改webpack.config.js
-compress: {
+`compress: {
   ecma: 5,
   warnings: false,
   drop_debugger: true,
@@ -86,20 +86,20 @@ compress: {
   // Pending further investigation:
   // https://github.com/mishoo/UglifyJS2/issues/2011
   comparisons: false,
-}
+}`
 
 3. 生产环境去除sourcemap
 修改webpack.config.js
-// const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
-const shouldUseSourceMap = process.env.REACT_APP_GENERATE_SOURCEMAP !== 'false'
+`// const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const shouldUseSourceMap = process.env.REACT_APP_GENERATE_SOURCEMAP !== 'false'`
 环境变量文件中使用
-REACT_APP_GENERATE_SOURCEMAP=false
+`REACT_APP_GENERATE_SOURCEMAP=false`
 
 4. 添加装饰器插件transform-decorators-legacy
 安装 @babel/plugin-proposal-decorators
-yarn add --dev @babel/plugin-proposal-decorators
+`yarn add --dev @babel/plugin-proposal-decorators`
 修改package.json中plugins
-"plugins": [
+`"plugins": [
     [
     "@babel/plugin-proposal-decorators",
     {
@@ -107,14 +107,14 @@ yarn add --dev @babel/plugin-proposal-decorators
     }
   ],
   ....
-]
+]`
 
 5. 添加插件 webpack-bundle-analyzer
 安装 webpack-bundle-analyzer
-yarn add --dev webpack-bundle-analyzer
+`yarn add --dev webpack-bundle-analyzer`
 修改 webpack.config.js
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+`const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // use BundleAnalyzerPlugin
 const shouldUseBundleAnalyzer = process.env.REACT_APP_USE_ANALYZER !== 'false'
@@ -122,7 +122,7 @@ const shouldUseBundleAnalyzer = process.env.REACT_APP_USE_ANALYZER !== 'false'
 plugins:[
 	....,
 	isEnvProduction && shouldUseBundleAnalyzer && new BundleAnalyzerPlugin(),
-]
+]`
 环境变量文件中添加
 REACT_APP_USE_ANALYZER=false
 该插件默认配置
@@ -161,7 +161,7 @@ new BundleAnalyzerPlugin({
 安装redux-logger
 yarn add --dev redux-logger
 项目中使用 configureStore.js
-import { createStore, applyMiddleware } from 'redux'
+`import { createStore, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
 import rootReducer from '../reducers'
 
@@ -177,14 +177,14 @@ export default function configureStore (initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState,
     window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : undefined)
   return store
-}
+}`
 
 7. 项目中添加nprogress进度条
 安装nprogress
 yarn add nprogress
 项目中使用 App.js
 
-import NProgress from 'nprogress'
+`import NProgress from 'nprogress'
 class App extends Component {
   componentWillUpdate () {
     NProgress.start()
@@ -203,13 +203,13 @@ class App extends Component {
       </div>
     )
   }
-}
+}`
 
 8. 项目打包生成.gz文件
 安装插件compression-webpack-plugin
 yarn add --dev compression-webpack-plugin
 修改webpack.config.js
-const CompressionPlugin = require("compression-webpack-plugin");
+`const CompressionPlugin = require("compression-webpack-plugin");
 
 plugins: [
 	...
@@ -220,14 +220,14 @@ plugins: [
         threshold: 10240,
         minRatio: 0.8
     }),
-]
+]`
 
 9. 按需加载ant design与ant design pro
 安装插件compression-webpack-plugin
 
 yarn add --dev babel-plugin-import
 修改package.json中plugins
-
+`
  "plugins": [
   ...
 [
@@ -249,7 +249,7 @@ yarn add --dev babel-plugin-import
     },
     "ant-design-pro"
   ] 
-]
+]`
 
 10. 多环境支持
 因为create-react-app只支持development,production,test三个环境，当需要对更多环境提供支持的时候（比如，公司有两个测试环境，对应的接口都不一样），就需要修改下配置了。
@@ -285,12 +285,12 @@ REACT_APP_XXX=XXX
 const NODE_ENV = process.env.REACT_ENV || process.env.NODE_ENV;
 修改package.json
 
-"scripts": {
+`"scripts": {
     "start": "node scripts/start.js",
     "build": "cross-env REACT_ENV=production node scripts/build.js",
     "release": "cross-env REACT_ENV=release node scripts/build.js",
     "test": "node scripts/test.js"
-  },
+  },`
 打包命令
 
 打包测试版本：yarn build
@@ -307,7 +307,7 @@ DLL(Dynamic Link Library)文件为动态链接库文件,在Windows中，许多�
 还是上面的例子：把每次构建，当做是生产产品的过程，我们把生产螺丝的过程先提取出来，之后我们不管调整产品的功能或者设计（对应于业务代码变更），都不必重复生产螺丝（第三方模块不需要重复打包）；除非是产品要使用新型号的螺丝（第三方模块需要升级），才需要去重新生产新的螺丝，然后接下来又可以专注于调整产品本身。
 新建webpack.vendor.config.js文件
 
-const path = require('path')
+`const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const webpack = require('webpack')
 
@@ -348,25 +348,25 @@ module.exports = {
       path: resolve('./vendor/[name].manifest.json')
     })
   ]
-}
+}`
 修改webpack.config.js文件
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 
-function pathResolve (dir) {
+`function pathResolve (dir) {
   return path.resolve(__dirname, '..', dir)
-}
+}`
 
 //检测文件或者文件夹存在
-function fsExistsSync (path) {
+`function fsExistsSync (path) {
   try {
     fs.accessSync(path, fs.F_OK)
   } catch (e) {
     return false
   }
   return true
-}
+}`
 
-const createVendorPlugins = (publicPath) => {
+`const createVendorPlugins = (publicPath) => {
   const plugins = []
   const hasVendor = fsExistsSync('./vendor')
   if (hasVendor) {
@@ -391,7 +391,7 @@ const createVendorPlugins = (publicPath) => {
     })
   }
   return plugins
-}
+}`
 
 ...
 plugins:[...].filter(Boolean).concat(createVendorPlugins(publicPath))
